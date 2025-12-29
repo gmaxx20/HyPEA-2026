@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Línea de Tiempo: Leyes Educativas Argentinas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #F0F2F5;
+      color: #1C1E21;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #003087;
+      margin-bottom: 30px;
+    }
+    .timeline {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .president-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #003087;
+    }
+    .ley-title {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #003087;
+    }
+    .summary {
+      line-height: 1.5;
+    }
+    .links {
+      margin-top: 10px;
+    }
+    .links a {
+      color: #1DA1F2;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .debate-section {
+      margin-top: 50px;
+      padding: 20px;
+      background: #E3F2FD;
+      border-radius: 12px;
+    }
+    .tweet {
+      background: #FFFFFF;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border-left: 4px solid #1DA1F2;
+    }
+    @media (max-width: 600px) {
+      .card-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      .president-pic {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>🏫 Línea de Tiempo: Políticas Educativas en Argentina 🇦🇷</h1>
+
+<div class="timeline">
+
+  <div class="card">
+    <div class="card-header">
+      <img class="president-pic" src="https://www.shutterstock.com/image-photo/julio-argentino-roca-closeup-portrait-260nw-2703122933.jpg" alt="Julio Argentino Roca">
+      <div>
+        <div class="ley-title">Ley 1420 de Educación Común (1884)</div>
+        <strong>Presidente: Julio Argentino Roca</strong>
+      </div>
+    </div>
+    <div class="summary">
+      Educación primaria obligatoria, gratuita y laica. Objetivo: construir el Estado Nación, integrar inmigrantes y reducir analfabetismo en boom agroexportador. Contexto: oligarquía liberal, "civilización vs. barbarie".
+    </div>
+    <div class="links">
+      <a href="https://es.wikipedia.org/wiki/Ley_1420" target="_blank">📜 Más sobre la Ley 1420 en Wikipedia</a><br>
+      <a href="https://es.wikipedia.org/wiki/Julio_Argentino_Roca" target="_blank">👤 Biografía de Roca</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <img class="president-pic" src="https://alchetron.com/cdn/hiplito-yrigoyen-4d3e85bb-e45d-4069-b316-a523727b978-resize-750.jpeg" alt="Hipólito Yrigoyen">
+      <div>
+        <div class="ley-title">Reforma Universitaria (1918)</div>
+        <strong>Presidente: Hipólito Yrigoyen</strong>
+      </div>
+    </div>
+    <div class="summary">
+      Autonomía universitaria y cogobierno. Objetivo: democratizar la educación superior contra élites conservadoras. Contexto: radicalismo, crisis posguerra y emergente industrialización.
+    </div>
+    <div class="links">
+      <a href="https://es.wikipedia.org/wiki/Reforma_universitaria_de_1918" target="_blank">📜 Más sobre la Reforma en Wikipedia</a><br>
+      <a href="https://es.wikipedia.org/wiki/Hip%C3%B3lito_Yrigoyen" target="_blank">👤 Biografía de Yrigoyen</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <img class="president-pic" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Presidente_Juan_Domingo_Per%C3%B3n_%28AGN_123768%29.jpg/330px-Presidente_Juan_Domingo_Per%C3%B3n_%28AGN_123768%29.jpg" alt="Juan Domingo Perón">
+      <div>
+        <div class="ley-title">Ley 13047 de Enseñanza Técnica (1947)</div>
+        <strong>Presidente: Juan Domingo Perón</strong>
+      </div>
+    </div>
+    <div class="summary">
+      Escuelas técnicas para obreros. Objetivo: adoctrinar en valores peronistas mientras se impulsaba industrialización por sustitución de importaciones. Contexto: ascenso peronista post-1943, justicia social.
+    </div>
+    <div class="links">
+      <a href="https://es.wikipedia.org/wiki/Educaci%C3%B3n_en_Argentina#Peronismo" target="_blank">📜 Más sobre educación peronista</a><br>
+      <a href="https://es.wikipedia.org/wiki/Juan_Domingo_Per%C3%B3n" target="_blank">👤 Biografía de Perón</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <img class="president-pic" src="https://www.washingtonpost.com/resizer/fC_zoJ3SYYBtLfngP6FWeoFlRrY=/arc-anglerfish-washpost-prod-washpost/public/DYLH37F67EI6FGYJCY4KZQ4UFY" alt="Jorge Rafael Videla">
+      <div>
+        <div class="ley-title">Reformas durante Dictadura (1976-1983)</div>
+        <strong>Junta: Jorge Rafael Videla</strong>
+      </div>
+    </div>
+    <div class="summary">
+      Control ideológico y represión en educación. Objetivo: eliminar "subversión". Contexto: neoliberalismo incipiente, ajuste fiscal y terror de Estado.
+    </div>
+    <div class="links">
+      <a href="https://es.wikipedia.org/wiki/Proceso_de_Reorganizaci%C3%B3n_Nacional#Educaci.C3.B3n" target="_blank">📜 Más sobre el período</a><br>
+      <a href="https://es.wikipedia.org/wiki/Jorge_Rafael_Videla" target="_blank">👤 Biografía de Videla</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <img class="president-pic" src="https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2009/4/9/1239295294374/Ra-l-Alfons-nhas-died-age-001.jpg?width=465&dpr=1&s=none&crop=none" alt="Raúl Alfonsín">
+      <div>
+        <div class="ley-title">Congreso Pedagógico Nacional (1984)</div>
+        <strong>Presidente: Raúl Alfonsín</strong>
+      </div>
+    </div>
+    <div class="summary">
+      Debates abiertos post-dictadura. Objetivo: restaurar democracia participativa. Contexto: transición democrática, hiperinflación inminente.
+    </div>
+    <div class="links">
+      <a href="https://es.wikipedia.org/wiki/Congreso_Pedag%C3%B3gico_Nacional_(Argentina)" target="_blank">📜 Más info</a><br>
+      <a href="https://es.wikipedia.org/wiki/Ra%C3%BAl_Alfons%C3%ADn" target="_blank">👤 Biografía de Alfonsín</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <img class="president-pic" src="https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i1gP7MRdpRyM/v0/-1x-1.webp" alt="Carlos Menem">
+      <div>
+        <div class="ley-title">Ley Federal de Educación (1993)</div>
+        <strong>Presidente: Carlos Menem</strong>
+      </div>
+    </div>
+    <div class="summary">
+      Descentralización y extensión obligatoria. Objetivo: eficiencia neoliberal. Contexto: convertibilidad, privatizaciones y ajuste.
+    </div>
+    <div class="links">
+      <a href="https://es.wikipedia.org/wiki/Ley_Federal_de_Educaci%C3%B3n_(Argentina)" target="_blank">📜 Más sobre la ley</a><br>
+      <a href="https://es.wikipedia.org/wiki/Carlos_Menem" target="_blank">👤 Biografía de Menem</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <img class="president-pic" src="https://media.gettyimages.com/id/1996626/photo/buenos-aires-argentina-argentine-presidential-candidate-nestor-kirchner-posses-as-he-meets-with.jpg?s=612x612&w=gi&k=20&c=vKRlQ-5mJsz6K9MXalQGHDzkVP8ik-nHShSokT7iK4s=" alt="Néstor Kirchner">
+      <div>
+        <div class="ley-title">Ley de Educación Nacional 26206 (2006)</div>
+        <strong>Presidente: Néstor Kirchner</strong>
+      </div>
+    </div>
+    <div class="summary">
+      Obligatoriedad extendida e inversión 6% PBI. Objetivo: inclusión post-crisis. Contexto: recuperación económica, anti-neoliberalismo.
+    </div>
+    <div class="links">
+      <a href="https://es.wikipedia.org/wiki/Ley_de_Educaci%C3%B3n_Nacional_(Argentina)" target="_blank">📜 Más sobre la ley</a><br>
+      <a href="https://es.wikipedia.org/wiki/N%C3%A9stor_Kirchner" target="_blank">👤 Biografía de Kirchner</a>
+    </div>
+  </div>
+
+  <div class="debate-section">
+    <h2>🗣️ Debate Histórico: ¿Qué dirían Sarmiento y Alberdi?</h2>
+    <div class="tweet">
+      <strong>@sarmiento.educador:</strong> ¡La Ley 1420 es mi legado! Educación central y obligatoria para civilizar la nación. ⚔️🏫
+    </div>
+    <div class="tweet">
+      <strong>@alberdi.constitución:</strong> Admirable la gratuidad, pero su centralismo ahoga el federalismo. Gobernar es poblar con libertad, no imponer. 📜
+    </div>
+    <p><strong>¡Actividad para ustedes!</strong> Investiguen una ley y agreguen un "tuit" defendiendo la postura de Sarmiento o Alberdi. ¡Editen este HTML y compartan!</p>
+  </div>
+
+</div>
+
+</body>
+</html>

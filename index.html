@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Argentina Interactiva - Sistema Educativo</title>
+    
+    <!-- Fuentes y estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    
+    <style>
+        /* ========== ESTILOS COMPLETOS ========== */
+        :root {
+            --primary-bg: #0A0A0C;
+            --surface-bg: #16161A;
+            --card-bg: #1E1E22;
+            --neon-celeste: #1E6FB9;
+            --neon-dorado: #FFD700;
+            --neon-rojo: #E53E3E;
+            --text-primary: #F2F2F2;
+            --text-secondary: #A1A1AA;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--neon-celeste), var(--surface-bg));
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(30, 111, 185, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--neon-dorado);
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--neon-celeste);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(30, 111, 185, 0.4);
+            border-color: var(--neon-dorado);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--neon-celeste);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            color: var(--neon-dorado);
+            margin-bottom: 15px;
+        }
+        
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .card-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: auto;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background: var(--neon-celeste);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--neon-dorado);
+            color: var(--primary-bg);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--neon-dorado);
+            border: 2px solid var(--neon-dorado);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--neon-dorado);
+            color: var(--primary-bg);
+        }
+        
+        .link-external {
+            color: var(--neon-celeste);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .link-external:hover {
+            color: var(--neon-dorado);
+        }
+        
+        /* Sección Documentos */
+        .documents-section {
+            background: var(--surface-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid var(--neon-dorado);
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .document-item {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid var(--neon-celeste);
+            transition: all 0.3s ease;
+        }
+        
+        .document-item:hover {
+            transform: translateX(5px);
+            border-color: var(--neon-dorado);
+        }
+        
+        /* Login Panel */
+        .login-panel {
+            background: var(--surface-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            border: 2px solid var(--neon-celeste);
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: var(--card-bg);
+            border: 1px solid var(--neon-celeste);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            margin-top: 40px;
+            border-top: 1px solid var(--neon-celeste);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Principal -->
+        <header class="header">
+            <h1><i class="fas fa-landmark"></i> Historia Argentina Interactiva</h1>
+            <p class="header-subtitle">Sistema Educativo Integrado - Portal de Aprendizaje Activo</p>
+            <div style="margin-top: 20px;">
+                <button id="loginBtn" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión Alumno
+                </button>
+                <a href="panel-profesor.html" class="btn btn-primary" style="margin-left: 10px;">
+                    <i class="fas fa-chalkboard-teacher"></i> Panel del Profesor
+                </a>
+            </div>
+        </header>
+        
+        <!-- Dashboard Principal -->
+        <section class="dashboard-grid">
+            <!-- Módulo 1: Curso Completo -->
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="card-title">Curso Completo Historia Argentina</h3>
+                <p class="card-description">
+                    Material completo del curso con todos los ejes temáticos, cronología, leyes fundamentales y contenidos históricos.
+                </p>
+                <div class="card-buttons">
+                    <a href="historia argentinafinal.html" class="btn btn-primary">
+                        <i class="fas fa-book-open"></i> Ver Curso Completo
+                    </a>
+                    <a href="perfil sarmiento.html" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-user"></i> Perfil Sarmiento
+                    </a>
+                    <a href="alberdi.html" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-user"></i> Perfil Alberdi
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Módulo 2: Sistema de Actividades -->
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3 class="card-title">Sistema de Actividades Interactivas</h3>
+                <p class="card-description">
+                    18 actividades diseñadas para 2025. Responde preguntas, sube archivos PDF y participa en debates históricos.
+                </p>
+                <div class="card-buttons">
+                    <a href="actividades.html" class="btn btn-primary">
+                        <i class="fas fa-play-circle"></i> Ver Todas las Actividades
+                    </a>
+                    <button id="actividad1Btn" class="btn btn-secondary">
+                        <i class="fas fa-pencil-alt"></i> Actividad 1
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Módulo 3: Leyes y Documentos -->
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <h3 class="card-title">Leyes Educativas y Documentos</h3>
+                <p class="card-description">
+                    Línea de tiempo de leyes educativas argentinas. Desde la Ley 1420 hasta la actualidad.
+                </p>
+                <div class="card-buttons">
+                    <a href="leyes con links.html" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-scroll"></i> Ver Leyes Educativas
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Módulo 4: Recursos Digitales -->
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+                <h3 class="card-title">Recursos Digitales y Enlaces</h3>
+                <p class="card-description">
+                    Accede a Wikipedia, chat con próceres AI, documentos históricos y material complementario.
+                </p>
+                <div class="card-buttons">
+                    <a href="https://es.wikipedia.org/wiki/Historia_de_la_educaci%C3%B3n_en_Argentina" 
+                       class="btn btn-secondary" target="_blank">
+                        <i class="fab fa-wikipedia-w"></i> Wikipedia
+                    </a>
+                    <a href="https://proceres.ai" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-robot"></i> Próceres AI
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Sección de Documentos PDF -->
+       <!-- Sección de Documentos PDF - VERSIÓN GOOGLE DRIVE -->
+<section class="documents-section">
+    <h2 style="color: var(--neon-dorado); margin-bottom: 20px;">
+        <i class="fas fa-folder-open"></i> Documentos y PDFs - HyPEA25
+    </h2>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">
+        Todos los documentos PDF del curso 2025 están disponibles en Google Drive.
+    </p>
+    
+    <div class="documents-grid">
+        <div class="document-item" onclick="window.open('https://drive.google.com/drive/folders/11TecoxOsd_AXGdQCALw8o_VyYZbxftRY?usp=drive_link', '_blank')" style="cursor: pointer;">
+            <h4><i class="fab fa-google-drive" style="color: #4285F4;"></i> Carpeta Completa en Drive</h4>
+            <p>Todos los documentos del curso</p>
+            <div class="link-external">
+                <i class="fas fa-external-link-alt"></i> Abrir Carpeta
+            </div>
+        </div>
+        
+        <!-- Si tienes IDs específicos, añade estos divs -->
+        <div class="document-item" onclick="window.open('https://drive.google.com/file/d/TU_ID_1/view?usp=sharing', '_blank')" style="cursor: pointer;">
+            <h4><i class="fas fa-file-pdf" style="color: #E53E3E;"></i> Planificación 2025</h4>
+            <p>Documento principal del curso</p>
+            <div class="link-external">
+                <i class="fas fa-eye"></i> Ver PDF
+            </div>
+        </div>
+        
+        <div class="document-item" onclick="window.open('https://drive.google.com/file/d/TU_ID_2/view?usp=sharing', '_blank')" style="cursor: pointer;">
+            <h4><i class="fas fa-file-pdf" style="color: #10B981;"></i> Actividades 2025</h4>
+            <p>Todas las actividades del año</p>
+            <div class="link-external">
+                <i class="fas fa-eye"></i> Ver PDF
+            </div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 25px;">
+        <button onclick="window.open('https://drive.google.com/drive/folders/11TecoxOsd_AXGdQCALw8o_VyYZbxftRY?usp=drive_link', '_blank')" 
+                class="btn btn-primary">
+            <i class="fab fa-google-drive"></i> Abrir Carpeta Completa en Drive
+        </button>
+    </div>
+</section>
+        
+        <!-- Panel de Login -->
+        <div id="loginSection" class="login-panel" style="display: none;">
+            <h3 style="color: var(--neon-dorado); margin-bottom: 20px;">
+                <i class="fas fa-user-graduate"></i> Identificación de Alumno
+            </h3>
+            <input type="text" id="nombreAlumno" class="login-input" placeholder="Nombre completo (ej: Juan Pérez)">
+            <input type="email" id="emailAlumno" class="login-input" placeholder="Email (ej: alumno@escuela.edu.ar)">
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button id="registrarBtn" class="btn btn-primary" style="flex: 1;">
+                    <i class="fas fa-check"></i> Ingresar como Alumno
+                </button>
+                <button id="cancelarLogin" class="btn btn-secondary" style="flex: 1;">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px;">
+                <i class="fas fa-info-circle"></i> Necesitas identificarte para enviar actividades
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Sistema Educativo Interactivo - Historia Argentina | <strong>Alumno: Micciullo Maximiliano</strong></p>
+            <p>3° Profesorado de Matemática - Sede Capioví | 2025</p>
+            <p style="color: var(--neon-dorado);">Prof. Enzo Fleitas</p>
+        </footer>
+    </div>
+    
+    <!-- Modal para Actividades -->
+    <div id="activityModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: var(--surface-bg); padding: 30px; border-radius: 15px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; border: 2px solid var(--neon-dorado);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 id="modalTitle" style="color: var(--neon-dorado); margin: 0;"></h3>
+                <button id="closeModal" style="background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;">×</button>
+            </div>
+            <div id="modalContent"></div>
+            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div id="modalActions"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Inline (TODO en un solo archivo) -->
+    <script>
+        // ========== CONFIGURACIÓN ==========
+        let alumnoActual = null;
+        
+        // ========== ELEMENTOS DOM ==========
+        const loginBtn = document.getElementById('loginBtn');
+        const loginSection = document.getElementById('loginSection');
+        const registrarBtn = document.getElementById('registrarBtn');
+        const cancelarLogin = document.getElementById('cancelarLogin');
+        const actividad1Btn = document.getElementById('actividad1Btn');
+        const explorarPdfsBtn = document.getElementById('explorarPdfsBtn');
+        const activityModal = document.getElementById('activityModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const modalActions = document.getElementById('modalActions');
+        const closeModal = document.getElementById('closeModal');
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ Sistema Historia Argentina cargado');
+            
+            // Cargar alumno si ya existe
+            cargarAlumno();
+            
+            // Configurar eventos
+            configurarEventos();
+            
+            // Mostrar mensaje de bienvenida
+            setTimeout(() => {
+                mostrarNotificacion('Bienvenido al Sistema de Historia Argentina Interactiva');
+            }, 1000);
+        });
+        
+        // ========== FUNCIONES PRINCIPALES ==========
+        function cargarAlumno() {
+            const alumnoGuardado = localStorage.getItem('alumnoActual');
+            if (alumnoGuardado) {
+                try {
+                    alumnoActual = JSON.parse(alumnoGuardado);
+                    actualizarBotonLogin();
+                    console.log(`👤 Alumno cargado: ${alumnoActual.nombre}`);
+                } catch (e) {
+                    console.error('Error cargando alumno:', e);
+                }
+            }
+        }
+        
+        function actualizarBotonLogin() {
+            if (alumnoActual) {
+                loginBtn.innerHTML = `<i class="fas fa-user-check"></i> ${alumnoActual.nombre}`;
+                loginBtn.classList.add('btn-primary');
+                loginBtn.classList.remove('btn-secondary');
+            } else {
+                loginBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Iniciar Sesión Alumno`;
+                loginBtn.classList.add('btn-secondary');
+                loginBtn.classList.remove('btn-primary');
+            }
+        }
+        
+        function configurarEventos() {
+            // Login/Logout
+            loginBtn.addEventListener('click', toggleLogin);
+            registrarBtn.addEventListener('click', registrarAlumno);
+            cancelarLogin.addEventListener('click', () => {
+                loginSection.style.display = 'none';
+            });
+            
+            // Actividades
+            actividad1Btn.addEventListener('click', () => mostrarActividad('actividad1'));
+            
+            // PDFs
+            explorarPdfsBtn.addEventListener('click', explorarPDFs);
+            
+            // Modal
+            closeModal.addEventListener('click', cerrarModal);
+            
+            // Cerrar modal al hacer clic fuera
+            activityModal.addEventListener('click', (e) => {
+                if (e.target === activityModal) {
+                    cerrarModal();
+                }
+            });
+        }
+        
+        function toggleLogin() {
+            if (alumnoActual) {
+                // Si ya está logueado, preguntar si quiere salir
+                if (confirm(`¿Cerrar sesión de ${alumnoActual.nombre}?`)) {
+                    alumnoActual = null;
+                    localStorage.removeItem('alumnoActual');
+                    actualizarBotonLogin();
+                    mostrarNotificacion('Sesión cerrada correctamente');
+                }
+            } else {
+                // Mostrar panel de login
+                loginSection.style.display = 'block';
+                document.getElementById('nombreAlumno').value = '';
+                document.getElementById('emailAlumno').value = '';
+            }
+        }
+        
+        function registrarAlumno() {
+            const nombre = document.getElementById('nombreAlumno').value.trim();
+            const email = document.getElementById('emailAlumno').value.trim();
+            
+            if (!nombre || !email) {
+                mostrarNotificacion('Por favor completa todos los campos', 'error');
+                return;
+            }
+            
+            alumnoActual = {
+                nombre: nombre,
+                email: email,
+                fechaRegistro: new Date().toISOString(),
+                id: Date.now() // ID único simple
+            };
+            
+            // Guardar en localStorage
+            localStorage.setItem('alumnoActual', JSON.stringify(alumnoActual));
+            
+            // Actualizar interfaz
+            actualizarBotonLogin();
+            loginSection.style.display = 'none';
+            
+            mostrarNotificacion(`¡Bienvenido ${nombre}! Ahora puedes participar en actividades`);
+            
+            // Intentar guardar en Firebase si está configurado
+            guardarEnFirebase();
+        }
+        
+        function guardarEnFirebase() {
+            // Esto es opcional - solo si configuraste Firebase
+            try {
+                if (typeof firebase !== 'undefined' && alumnoActual) {
+                    // Aquí iría el código para Firebase
+                    console.log('Firebase disponible, alumno:', alumnoActual);
+                }
+            } catch (error) {
+                console.log('Firebase no configurado, usando localStorage');
+            }
+        }
+        
+        // ========== SISTEMA DE ACTIVIDADES ==========
+        const actividades = {
+            'actividad1': {
+                titulo: '📚 Actividad 1: Análisis de la Ley 1420',
+                descripcion: 'Fecha: 9/4/2025 - Modalidad: Grupal',
+                contenido: `
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="color: var(--neon-celeste); margin-bottom: 10px;">Consigna:</h4>
+                        <p>Lean el texto de Meléndez y Vizcarra "Historia y política de la educación en la formación docente" y elaboren un mapa conceptual que sintetice los principales argumentos sobre la importancia de esta materia.</p>
+                        
+                        <div style="background: var(--card-bg); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid var(--neon-dorado);">
+                            <h5 style="color: var(--neon-dorado); margin-bottom: 8px;">Preguntas guía:</h5>
+                            <ol style="padding-left: 20px;">
+                                <li>¿Cuáles eran los objetivos principales de la Ley 1420?</li>
+                                <li>¿A quiénes incluía y a quiénes excluía el sistema educativo de 1884?</li>
+                                <li>¿Qué rol tenía la mujer en la educación según esta ley?</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px; color: var(--text-primary);">
+                            <i class="fas fa-edit"></i> Tu respuesta:
+                        </label>
+                        <textarea id="respuestaText" placeholder="Escribe tu análisis aquí..." 
+                                  style="width: 100%; height: 180px; padding: 15px; background: var(--card-bg); 
+                                         color: var(--text-primary); border: 1px solid var(--neon-celeste); 
+                                         border-radius: 8px; font-family: inherit; font-size: 1rem;"></textarea>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px; color: var(--text-primary);">
+                            <i class="fas fa-file-pdf" style="color: #E53E3E;"></i> Subir archivo PDF (opcional):
+                        </label>
+                        <input type="file" id="archivoPDF" accept=".pdf" style="width: 100%; padding: 10px; background: var(--card-bg); color: var(--text-primary); border: 1px dashed var(--neon-celeste); border-radius: 8px;">
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px;">
+                            Máximo 10MB. Puedes subir tu mapa conceptual o análisis.
+                        </p>
+                    </div>
+                    
+                    <div style="background: rgba(30, 111, 185, 0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <h5 style="color: var(--neon-celeste); margin-bottom: 10px;">Recursos recomendados:</h5>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <a href="leyes con links.html" target="_blank" style="color: var(--neon-dorado); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; background: rgba(255, 215, 0, 0.1); padding: 8px 12px; border-radius: 5px;">
+                                <i class="fas fa-gavel"></i> Leyes Educativas
+                            </a>
+                            <a href="https://es.wikipedia.org/wiki/Ley_1420" target="_blank" style="color: #1DA1F2; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; background: rgba(29, 161, 242, 0.1); padding: 8px 12px; border-radius: 5px;">
+                                <i class="fab fa-wikipedia-w"></i> Wikipedia Ley 1420
+                            </a>
+                            <a href="HyPEA25/Planificacion2025.pdf" target="_blank" style="color: #E53E3E; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; background: rgba(229, 62, 62, 0.1); padding: 8px 12px; border-radius: 5px;">
+                                <i class="fas fa-file-pdf"></i> Planificación 2025
+                            </a>
+                        </div>
+                    </div>
+                `,
+                acciones: `
+                    <button onclick="enviarActividad('actividad1')" class="btn" style="background: var(--neon-celeste); color: white; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-paper-plane"></i> Enviar Respuesta
+                    </button>
+                    <button onclick="cerrarModal()" class="btn" style="background: transparent; color: var(--text-secondary); border: 1px solid var(--text-secondary); padding: 12px 25px; border-radius: 8px; margin-left: 10px;">
+                        Cancelar
+                    </button>
+                `
+            }
+        };
+        
+        function mostrarActividad(id) {
+            if (!alumnoActual) {
+                mostrarNotificacion('Por favor inicia sesión primero para participar', 'error');
+                loginSection.style.display = 'block';
+                return;
+            }
+            
+            const actividad = actividades[id];
+            if (!actividad) {
+                mostrarNotificacion('Actividad no encontrada', 'error');
+                return;
+            }
+            
+            modalTitle.innerHTML = actividad.titulo;
+            modalContent.innerHTML = `
+                <div style="color: var(--text-secondary); margin-bottom: 15px;">
+                    <i class="fas fa-calendar"></i> ${actividad.descripcion}
+                </div>
+                ${actividad.contenido}
+            `;
+            
+            modalActions.innerHTML = actividad.acciones;
+            activityModal.style.display = 'flex';
+        }
+        
+        function enviarActividad(id) {
+            const respuesta = document.getElementById('respuestaText')?.value.trim();
+            const archivo = document.getElementById('archivoPDF')?.files[0];
+            
+            if (!respuesta) {
+                mostrarNotificacion('Por favor escribe tu respuesta antes de enviar', 'error');
+                return;
+            }
+            
+            // Datos de la respuesta
+            const respuestaData = {
+                actividad: id,
+                alumno: alumnoActual.nombre,
+                email: alumnoActual.email,
+                respuesta: respuesta,
+                fecha: new Date().toLocaleString(),
+                archivo: archivo ? archivo.name : null
+            };
+            
+            // Guardar en localStorage (simulación)
+            const respuestasGuardadas = JSON.parse(localStorage.getItem('respuestasAlumnos') || '[]');
+            respuestasGuardadas.push(respuestaData);
+            localStorage.setItem('respuestasAlumnos', JSON.stringify(respuestasGuardadas));
+            
+            // Mostrar confirmación
+            mostrarNotificacion(`¡Actividad enviada correctamente, ${alumnoActual.nombre}!`, 'success');
+            cerrarModal();
+            
+            // Aquí iría el código para enviar a Firebase
+            console.log('Respuesta guardada:', respuestaData);
+        }
+        
+        function explorarPDFs() {
+            // Abrir la carpeta local de PDFs
+            const pdfs = [
+                { nombre: 'Planificación 2025', ruta: 'HyPEA25/Planificacion2025.pdf' },
+                { nombre: 'Actividad 1 - Ley 1420', ruta: 'HyPEA25/Actividad1.pdf' },
+                { nombre: 'Textos Históricos', ruta: 'HyPEA25/TextosHistoricos.pdf' },
+                { nombre: 'Evaluación Final', ruta: 'HyPEA25/EvaluacionFinal.pdf' },
+                { nombre: 'Cronología Histórica', ruta: 'HyPEA25/Cronologia.pdf' },
+                { nombre: 'Material Complementario', ruta: 'HyPEA25/MaterialComplementario.pdf' }
+            ];
+            
+            modalTitle.innerHTML = '<i class="fas fa-folder-open"></i> Biblioteca de PDFs - HyPEA25';
+            modalContent.innerHTML = `
+                <div style="margin-bottom: 20px; color: var(--text-secondary);">
+                    <p>Todos los documentos PDF del curso 2025. Haz clic en cualquier documento para abrirlo.</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                    ${pdfs.map(pdf => `
+                        <div style="background: var(--card-bg); border-radius: 10px; padding: 15px; border: 1px solid var(--neon-celeste); transition: all 0.3s ease; cursor: pointer;" 
+                             onclick="abrirPDF('${pdf.ruta}')">
+                            <div style="color: #E53E3E; font-size: 2rem; margin-bottom: 10px;">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <h4 style="color: var(--text-primary); margin: 0; font-size: 0.95rem;">${pdf.nombre}</h4>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        <i class="fas fa-info-circle"></i> Nota: Los PDFs se abrirán en una nueva pestaña.
+                        Asegúrate de tener un lector de PDFs instalado.
+                    </p>
+                </div>
+            `;
+            
+            modalActions.innerHTML = `
+                <button onclick="cerrarModal()" class="btn" style="background: var(--neon-dorado); color: var(--primary-bg); padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold;">
+                    <i class="fas fa-check"></i> Entendido
+                </button>
+            `;
+            
+            activityModal.style.display = 'flex';
+        }
+        
+        function abrirPDF(ruta) {
+            // Abrir PDF en nueva pestaña
+            window.open(ruta, '_blank');
+        }
+        
+        function cerrarModal() {
+            activityModal.style.display = 'none';
+            modalContent.innerHTML = '';
+            modalActions.innerHTML = '';
+        }
+        
+        function mostrarNotificacion(mensaje, tipo = 'info') {
+            // Crear notificación
+            const notificacion = document.createElement('div');
+            notificacion.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                max-width: 350px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            `;
+            
+            // Color según tipo
+            if (tipo === 'error') {
+                notificacion.style.background = 'linear-gradient(135deg, #E53E3E, #C53030)';
+            } else if (tipo === 'success') {
+                notificacion.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+            } else {
+                notificacion.style.background = 'linear-gradient(135deg, var(--neon-celeste), #1a5a9e)';
+            }
+            
+            notificacion.innerHTML = `
+                <i class="fas fa-${tipo === 'error' ? 'exclamation-triangle' : tipo === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${mensaje}</span>
+            `;
+            
+            document.body.appendChild(notificacion);
+            
+            // Remover después de 5 segundos
+            setTimeout(() => {
+                notificacion.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notificacion.parentNode) {
+                        notificacion.parentNode.removeChild(notificacion);
+                    }
+                }, 300);
+            }, 5000);
+            
+            // Añadir estilos de animación si no existen
+            if (!document.querySelector('#notificacion-estilos')) {
+                const estilos = document.createElement('style');
+                estilos.id = 'notificacion-estilos';
+                estilos.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(estilos);
+            }
+        }
+        
+        // ========== FUNCIONES GLOBALES ==========
+        window.mostrarActividad = mostrarActividad;
+        window.enviarActividad = enviarActividad;
+        window.cerrarModal = cerrarModal;
+        window.abrirPDF = abrirPDF;
+    </script>
+</body>
+</html>

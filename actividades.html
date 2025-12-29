@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividades - Historia Argentina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0A0A0C;
+            color: #F2F2F2;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #1E6FB9, #16161A);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .activity-card {
+            background: #1E1E22;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #1E6FB9;
+            transition: all 0.3s ease;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+        }
+        
+        .activity-number {
+            background: #1E6FB9;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #1E6FB9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .volver-btn {
+            display: block;
+            text-align: center;
+            margin: 40px auto;
+            padding: 15px 30px;
+            background: #FFD700;
+            color: #0A0A0C;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-tasks"></i> Sistema de Actividades</h1>
+            <p>18 actividades diseñadas para el curso 2025</p>
+            <a href="index.html" class="btn">Volver al Inicio</a>
+        </div>
+        
+        <div class="activities-grid">
+            <!-- Actividad 1 -->
+            <div class="activity-card">
+                <div class="activity-number">1</div>
+                <h3>Análisis Ley 1420</h3>
+                <p><strong>Fecha:</strong> 9/4/2025</p>
+                <p><strong>Modalidad:</strong> Grupal</p>
+                <p>Lean el texto y elaboren un mapa conceptual sobre la importancia de la materia.</p>
+                <a href="index.html" onclick="localStorage.setItem('actividadSeleccionada', '1'); return true;" class="btn">
+                    Comenzar Actividad
+                </a>
+            </div>
+            
+            <!-- Actividad 2 -->
+            <div class="activity-card">
+                <div class="activity-number">2</div>
+                <h3>Debate Sarmiento vs Alberdi</h3>
+                <p><strong>Fecha:</strong> 16/4/2025</p>
+                <p><strong>Modalidad:</strong> Individual</p>
+                <p>Compara las propuestas educativas de Sarmiento y Alberdi.</p>
+                <a href="index.html" onclick="localStorage.setItem('actividadSeleccionada', '2'); return true;" class="btn">
+                    Comenzar Actividad
+                </a>
+            </div>
+            
+            <!-- Más actividades... -->
+        </div>
+        
+        <a href="index.html" class="volver-btn">
+            <i class="fas fa-arrow-left"></i> Volver al Inicio
+        </a>
+    </div>
+    
+    <script>
+        // Redirigir a la actividad específica
+        document.addEventListener('DOMContentLoaded', function() {
+            const actividadSeleccionada = localStorage.getItem('actividadSeleccionada');
+            if (actividadSeleccionada) {
+                // Aquí podrías redirigir a una actividad específica
+                console.log('Actividad seleccionada:', actividadSeleccionada);
+                localStorage.removeItem('actividadSeleccionada');
+            }
+        });
+    </script>
+</body>
+</html>

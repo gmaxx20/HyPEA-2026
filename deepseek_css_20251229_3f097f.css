@@ -1,0 +1,14 @@
+/* styles.css */
+:root {
+    --primary-bg: #0A0A0C;
+    --surface-bg: #16161A;
+    --card-bg: #1E1E22;
+    --neon-celeste: #1E6FB9;
+    --neon-dorado: #FFD700;
+    --neon-rojo: #E53E3E;
+    --text-primary: #F2F2F2;
+    --text-secondary: #A1A1AA;
+}
+
+/* Todos los estilos que estaban en el <style> del index.html */
+/* Copia todo desde <style> hasta </style> */

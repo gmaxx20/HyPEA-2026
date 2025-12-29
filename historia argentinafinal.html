@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Educativa Argentina - </title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ========== VARIABLES CSS ========== */
+        :root {
+            --primary-bg: #0A0A0C;
+            --surface-bg: #16161A;
+            --card-bg: #1E1E22;
+            --paper-texture: #E3E1D5;
+            
+            /* Colores Patrios Argentina - Versión Neon */
+            --neon-celeste: #1E6FB9;
+            --neon-dorado: #FFD700;
+            --neon-rojo: #E53E3E;
+            --neon-blanco: #FFFFFF;
+            
+            /* Texto */
+            --text-primary: #F2F2F2;
+            --text-secondary: #A1A1AA;
+            --text-dark: #1F1F1F;
+            
+            /* Efectos */
+            --glow-celeste: 0 0 20px rgba(30, 111, 185, 0.6);
+            --glow-dorado: 0 0 20px rgba(255, 215, 0, 0.6);
+            --shadow-card: 0 4px 25px rgba(0, 0, 0, 0.5);
+            
+            /* Espaciado */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+        }
+
+        /* ========== RESET Y BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ========== BACKGROUND MESH ========== */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(30, 111, 185, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ========== SIDEBAR GX ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--surface-bg);
+            border-right: 2px solid var(--neon-dorado);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            text-align: center;
+            border-bottom: 1px solid var(--neon-celeste);
+        }
+
+        .logo-glow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-dorado);
+            text-shadow: var(--glow-dorado);
+        }
+
+        .logo-glow i {
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .nav-group {
+            padding: var(--space-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-title {
+            color: var(--neon-celeste);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .nav-tab {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            margin-bottom: var(--space-xs);
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--neon-dorado);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .nav-tab.active {
+            background: var(--neon-dorado);
+            color: var(--primary-bg);
+            font-weight: 600;
+            box-shadow: var(--glow-dorado);
+        }
+
+        /* ========== MOBILE TOGGLE ========== */
+        .mobile-toggle {
+            position: fixed;
+            top: var(--space-md);
+            left: var(--space-md);
+            z-index: 1001;
+            background: var(--surface-bg);
+            border: 2px solid var(--neon-celeste);
+            color: var(--neon-celeste);
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            box-shadow: var(--glow-celeste);
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            margin-left: 280px;
+            padding: var(--space-xl);
+            min-height: 100vh;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-lg);
+            background: var(--surface-bg);
+            border-radius: 12px;
+            border: 1px solid var(--neon-celeste);
+            box-shadow: var(--shadow-card);
+        }
+
+        .section-number {
+            font-size: 0.85rem;
+            color: var(--neon-celeste);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-xs);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--neon-dorado);
+            margin-bottom: var(--space-sm);
+            text-shadow: var(--glow-dorado);
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .law-badge {
+            display: inline-block;
+            background: var(--neon-rojo);
+            color: white;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .law-meta {
+            font-size: 0.9rem;
+            color: var(--neon-celeste);
+            margin-top: var(--space-sm);
+        }
+
+        /* ========== CARDS GX ========== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+
+        .card-neon {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            border: 1px solid var(--neon-celeste);
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(30, 111, 185, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-neon:hover::before {
+            opacity: 1;
+        }
+
+        .card-neon:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--glow-celeste);
+            border-color: var(--neon-dorado);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--neon-celeste);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: var(--space-sm);
+            box-shadow: var(--glow-celeste);
+        }
+
+        .card-neon h3 {
+            color: var(--neon-dorado);
+            margin-bottom: var(--space-sm);
+            font-size: 1.2rem;
+        }
+
+        .card-neon p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            font-size: 0.75rem;
+            color: var(--neon-celeste);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--space-sm);
+        }
+
+        /* ========== QUOTE CARD ========== */
+        .quote-card {
+            background: var(--surface-bg);
+            border-left: 4px solid var(--neon-dorado);
+            padding: var(--space-lg);
+            margin: var(--space-xl) 0;
+            border-radius: 0 12px 12px 0;
+            position: relative;
+            box-shadow: var(--shadow-card);
+        }
+
+        .quote-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-dorado), transparent);
+            opacity: 0.1;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: var(--space-sm);
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-author {
+            color: var(--neon-dorado);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .quote-context {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-align: right;
+            margin-top: var(--space-xs);
+        }
+
+        /* ========== TIMELINE GX ========== */
+        .timeline-container {
+            position: relative;
+            margin: var(--space-xl) 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--neon-celeste), var(--neon-dorado));
+            box-shadow: var(--glow-celeste);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: var(--space-lg);
+            padding-left: 80px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 0.6s ease forwards;
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-node {
+            position: absolute;
+            left: 22px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border: 3px solid var(--neon-dorado);
+            border-radius: 50%;
+            background: var(--primary-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-node:hover {
+            transform: scale(1.3);
+            box-shadow: var(--glow-dorado);
+        }
+
+        .timeline-content {
+            background: var(--surface-bg);
+            padding: var(--space-lg);
+            border-radius: 8px;
+            border-left: 4px solid var(--neon-dorado);
+            box-shadow: var(--shadow-card);
+        }
+
+        .timeline-date {
+            color: var(--neon-dorado);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .timeline-title {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ========== LAW CONTENT ========== */
+        .law-content {
+            margin-top: var(--space-xl);
+        }
+
+        .timeline-gx {
+            background: linear-gradient(135deg, var(--neon-celeste), #1a5a9e);
+            border-radius: 12px;
+            padding: var(--space-xl);
+            margin: var(--space-lg) 0;
+            color: white;
+            box-shadow: var(--shadow-card);
+        }
+
+        .timeline-gx h2 {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+            font-size: 1.5rem;
+            text-shadow: var(--glow-celeste);
+        }
+
+        .timeline-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: var(--space-md);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--neon-dorado);
+            color: var(--primary-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto var(--space-sm);
+            box-shadow: var(--glow-dorado);
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .step-desc {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .articles-section {
+            background: var(--paper-texture);
+            border-radius: 12px;
+            padding: var(--space-xl);
+            margin: var(--space-lg) 0;
+            color: var(--text-dark);
+        }
+
+        .article-item {
+            background: white;
+            border-radius: 8px;
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            border-left: 4px solid var(--neon-celeste);
+            transition: all 0.3s ease;
+        }
+
+        .article-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-number {
+            color: var(--neon-celeste);
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .article-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer-gx {
+            text-align: center;
+            padding: var(--space-xl);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--neon-celeste);
+            margin-top: var(--space-xl);
+        }
+
+        .footer-glow {
+            color: var(--neon-dorado);
+            text-shadow: var(--glow-dorado);
+            font-weight: 600;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-md);
+            }
+            
+            .mobile-toggle {
+                display: flex;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-item {
+                padding-left: 60px;
+            }
+            
+            .timeline-node {
+                left: 17px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ========== UTILIDADES ========== */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Mesh -->
+    <div class="bg-mesh"></div>
+
+    <!-- Mobile Toggle -->
+    <button class="mobile-toggle" id="mobileToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-glow">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>ARG <span></span></h1>
+            </div>
+        </div>
+        
+        <div class="nav-sections">
+            <!-- Planificación -->
+            <div class="nav-group">
+                <h3 class="nav-title"><i class="fas fa-cogs"></i> Planificación</h3>
+                <button class="nav-tab active" data-section="fundamentacion">
+                    <i class="fas fa-book"></i> Fundamentación
+                </button>
+                <button class="nav-tab" data-section="objetivos">
+                    <i class="fas fa-bullseye"></i> Objetivos
+                </button>
+                <button class="nav-tab" data-section="metodologia">
+                    <i class="fas fa-gears"></i> Metodología
+                </button>
+            </div>
+
+            <!-- Contenidos -->
+            <div class="nav-group">
+                <h3 class="nav-title"><i class="fas fa-layer-group"></i> Contenidos</h3>
+                <button class="nav-tab" data-section="eje1">
+                    <i class="fas fa-monument"></i> Los Fundadores
+                </button>
+                <button class="nav-tab" data-section="eje2">
+                    <i class="fas fa-industry"></i> Estado Omnipotente
+                </button>
+                <button class="nav-tab" data-section="eje3">
+                    <i class="fas fa-map-marked-alt"></i> Mapas Actuales
+                </button>
+            </div>
+
+            <!-- Cronología -->
+            <div class="nav-group">
+                <h3 class="nav-title"><i class="fas fa-clock"></i> Cronología</h3>
+                <button class="nav-tab" data-section="timeline">
+                    <i class="fas fa-timeline"></i> Línea de Tiempo
+                </button>
+                <button class="nav-tab" data-section="periodos">
+                    <i class="fas fa-folder-open"></i> Períodos Históricos
+                </button>
+            </div>
+
+            <!-- Evaluación -->
+            <div class="nav-group">
+                <h3 class="nav-title"><i class="fas fa-clipboard-check"></i> Evaluación</h3>
+                <button class="nav-tab" data-section="actividades">
+                    <i class="fas fa-tasks"></i> Actividades
+                </button>
+                <button class="nav-tab" data-section="evaluacion">
+                    <i class="fas fa-chart-line"></i> Sistema
+                </button>
+            </div>
+
+            <!-- Leyes -->
+            <div class="nav-group">
+                <h3 class="nav-title"><i class="fas fa-gavel"></i> Leyes Fundamentales</h3>
+                <button class="nav-tab" data-section="ley1420">
+                    <i class="fas fa-scroll"></i> Ley 1420 (1884)
+                </button>
+                <button class="nav-tab" data-section="ley26206">
+                    <i class="fas fa-scroll"></i> Ley 26.206 (2006)
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- ========== FUNDAMENTACIÓN ========== -->
+        <section id="fundamentacion" class="content-section active">
+            <header class="section-header">
+                <div class="section-number">FUNDAMENTACIÓN</div>
+                <h1 class="section-title">Marco Teórico y Pedagógico</h1>
+                <p class="section-description">La educación en su acontecer temporal, desde una visión crítica, reflexiva y propositiva</p>
+            </header>
+
+            <div class="quote-card">
+                <div class="quote-glow"></div>
+                <p class="quote-text">"Educar la mente sin educar el corazón, no es educar."</p>
+                <p class="quote-author">Aristóteles</p>
+                <p class="quote-context">Filosofía Clásica - Fundamentos Educativos</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-search"></i></div>
+                    <h3>Enfoque Histórico-Crítico</h3>
+                    <p>Abordamos la educación desde una visión crítica, reflexiva y propositiva, estudiando el desarrollo del Sistema Educativo Argentino desde los modelos precolombinos hasta la actualidad.</p>
+                    <div class="card-footer">Metodológica | Planificación Anual</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Dimensión Sincrónica</h3>
+                    <p>Las variables que establecen una estructura social definida están necesariamente ligadas a objetivos educacionales, planes pedagógicos, sujetos y prácticas educativas igualmente concretos en cada momento histórico.</p>
+                    <div class="card-footer">Conceptual | Marco Teórico</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-theater-masks"></i></div>
+                    <h3>Micropolítica Escolar</h3>
+                    <p>Las polémicas históricas emergen en la micropolítica escolar a través de identidades de distintos sujetos educacionales, en la actividad cotidiana de instituciones públicas y privadas.</p>
+                    <div class="card-footer">Práctica | Fundamentación</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== OBJETIVOS ========== -->
+        <section id="objetivos" class="content-section">
+            <header class="section-header">
+                <div class="section-number">OBJETIVOS</div>
+                <h1 class="section-title">Metas de Aprendizaje</h1>
+                <p class="section-description">Competencias y capacidades a desarrollar en la formación docente</p>
+            </header>
+
+            <div class="cards-grid">
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Comprensión Histórica</h3>
+                    <p>Aprehender y comprender de manera crítica los diferentes caminos emprendidos dentro del ámbito pedagógico nacional a lo largo del tiempo.</p>
+                    <div class="card-footer">Cognitivo | Análisis y Síntesis</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h3>Análisis Normativo</h3>
+                    <p>Ubicar la mirada sobre los diferentes marcos normativos que plasman formalmente el carácter del Sistema Educativo desde el Estado.</p>
+                    <div class="card-footer">Procedimental | Evaluación</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-crosshairs"></i></div>
+                    <h3>Intervención Crítica</h3>
+                    <p>Formar docentes como intelectuales orgánicos capaces de leer la historia para intervenir el presente y construir proyectos colectivos democráticos.</p>
+                    <div class="card-footer">Actitudinal | Creación</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== MÉTODOLOGÍA ========== -->
+        <section id="metodologia" class="content-section">
+            <header class="section-header">
+                <div class="section-number">METODOLOGÍA</div>
+                <h1 class="section-title">Estrategias Pedagógicas</h1>
+                <p class="section-description">Enfoques didácticos para el abordaje crítico de la historia educativa</p>
+            </header>
+
+            <div class="cards-grid">
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>Análisis de Fuentes</h3>
+                    <p>Trabajo con documentos históricos, legislación educativa, testimonios y fuentes primarias que permitan reconstruir el proceso de formación del sistema educativo argentino.</p>
+                    <div class="card-footer">Enfoque: Hermenéutico | Modalidad: Grupal e Individual</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-comments"></i></div>
+                    <h3>Debates Dirigidos</h3>
+                    <p>Espacios de discusión sobre controversias educativas históricas y contemporáneas, promoviendo el pensamiento crítico y la argumentación fundamentada.</p>
+                    <div class="card-footer">Enfoque: Dialéctico | Modalidad: Participativa</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-mask"></i></div>
+                    <h3>Simulaciones Históricas</h3>
+                    <p>Recreación de momentos decisivos de la historia educativa argentina mediante juegos de rol que permitan vivenciar las tensiones y decisiones de los actores históricos.</p>
+                    <div class="card-footer">Enfoque: Experiencial | Modalidad: Dramatización</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== EJE 1: LOS FUNDADORES ========== -->
+        <section id="eje1" class="content-section">
+            <header class="section-header">
+                <div class="section-number">EJE TEMÁTICO I</div>
+                <h1 class="section-title">Los Fundadores</h1>
+                <p class="section-description">Período: Precolombino - 1905 | Los Orígenes del Sistema Educativo</p>
+            </header>
+
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Precolombino</div>
+                        <h3 class="timeline-title">Modelos Precolombinos y Conquista</h3>
+                        <p class="timeline-description">Concepciones educativas indígenas, ruptura impuesta por la conquista hispánica y proceso de aculturación que desplaza saberes originarios.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1536-1810</div>
+                        <h3 class="timeline-title">Educación Colonial y Poder</h3>
+                        <p class="timeline-description">Articulación entre Corona, Iglesia y familia en la instrucción virreinal, enseñanza escolarizada limitada a élites criollas, exclusión de mujeres e indígenas.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1810-1880</div>
+                        <h3 class="timeline-title">Antecedentes de la Laicización</h3>
+                        <p class="timeline-description">Tensiones entre proyectos centralistas y federales, invocación de Alberdi a la instrucción pública como base de la organización nacional.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1884</div>
+                        <h3 class="timeline-title">Sarmiento y la Ley 1420</h3>
+                        <p class="timeline-description">Ley 1420 como hito fundacional: instrucción laica, obligatoria y gratuita, formación de maestros normales, creación del Consejo Nacional de Educación.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1900-1905</div>
+                        <h3 class="timeline-title">Consenso y Disenso</h3>
+                        <p class="timeline-description">Expansión de la escuela primaria, intentos de reforma universitaria, surgimiento de gremios docentes, tensión entre laicismo y católicos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-glow"></div>
+                <p class="quote-text">"Educar al soberano, he aquí el gran problema de la humanidad; el que lo resuelva mejor que ningún otro pueblo, será el que marche a la cabeza de las naciones."</p>
+                <p class="quote-author">Domingo Faustino Sarmiento</p>
+                <p class="quote-context">Educación del Pueblo - 1865</p>
+            </div>
+        </section>
+
+        <!-- ========== EJE 2: ESTADO OMNIPOTENTE ========== -->
+        <section id="eje2" class="content-section">
+            <header class="section-header">
+                <div class="section-number">EJE TEMÁTICO II</div>
+                <h1 class="section-title">El Estado Omnipotente</h1>
+                <p class="section-description">Período: 1946-1983 | Centralización, Masificación y Represión</p>
+            </header>
+
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1946-1955</div>
+                        <h3 class="timeline-title">Peronismo y Masificación</h3>
+                        <p class="timeline-description">Gobiernos de Perón que universalizan la escuela primaria, crean becas y edificios escolares, incorporan el voto femenino y promueven la educación técnica estatal.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1955-1976</div>
+                        <h3 class="timeline-title">Crisis del Modelo Centralizado</h3>
+                        <p class="timeline-description">Agotamiento fiscal del Estado benefactor, presiones descentralizadoras, golpe de 1955 y transferencia de escuelas a provincias.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1976-1983</div>
+                        <h3 class="timeline-title">Educación bajo Represión</h3>
+                        <p class="timeline-description">Intervención de universidades, censura a contenidos, persecución de docentes y estudiantes, Plan CONINTES y militarización de la escuela.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-university"></i></div>
+                    <h3>Universidad Tecnológica Nacional</h3>
+                    <p>La Ley 14.855 transformó las Escuelas Industriales en universidades tecnológicas. Marcó el inicio de la educación superior técnica estatal.</p>
+                    <div class="card-footer">1959 | Clasificación: Tecnológico</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                    <h3>Estatuto del Docente</h3>
+                    <p>Decreto 28.719/54 estableció el Estatuto del Docente. Ley 12.978 estableció el salario mínimo docente durante el primer peronismo.</p>
+                    <div class="card-footer">1954 | Clasificación: Laboral</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-ban"></i></div>
+                    <h3>Proyecto Educativo Autoritario</h3>
+                    <p>Se implementó la "educación para la vida familiar". Se censuraron contenidos "subversivos" y se persiguió a docentes comprometidos políticamente.</p>
+                    <div class="card-footer">1976-1983 | Clasificación: Represivo</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== EJE 3: MAPAS ACTUALES ========== -->
+        <section id="eje3" class="content-section">
+            <header class="section-header">
+                <div class="section-number">EJE TEMÁTICO III</div>
+                <h1 class="section-title">Los Mapas Actuales</h1>
+                <p class="section-description">Período: 1990-2025 | Neoliberalismo, Democratización y Nuevos Desafíos</p>
+            </header>
+
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1991-1995</div>
+                        <h3 class="timeline-title">Transferencias y Ley 24195</h3>
+                        <p class="timeline-description">Ley de Transferencias de 1992 y Ley Federal de Educación 24195 que consolidan la descentralización y marcan el paso de un Estado proveedor a un Estado regulador.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1990s</div>
+                        <h3 class="timeline-title">Reformas de los '90</h3>
+                        <p class="timeline-description">Lógica de competitividad, evaluación estandarizada, flexibilización laboral docente, expansión de la educación privada y introducción de contenidos tecnológicos.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2006</div>
+                        <h3 class="timeline-title">Ley 26206 y ESI</h3>
+                        <p class="timeline-description">Sanción de la Ley Nacional de Educación 26206, ampliación de la escolaridad obligatoria, inclusión de Educación Sexual Integral y perspectiva de derechos.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2020-2025</div>
+                        <h3 class="timeline-title">Pandemia y Pospandemia</h3>
+                        <p class="timeline-description">Suspensión de clases presenciales, brecha digital, aprendizajes esperados vs reales, aumento de deserción, salud mental estudiantil y docente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-laptop"></i></div>
+                    <h3>Nuevas Tecnologías y Desigualdad</h3>
+                    <p>Expansión de plataformas digitales, brecha socio-digital exacerbada por la pandemia, disputa sobre reemplazo o potenciación del docente.</p>
+                    <div class="card-footer">2020-2025 | Clasificación: Tecnológico</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-hands-helping"></i></div>
+                    <h3>Gestión Social y Tercer Sector</h3>
+                    <p>Crecimiento de fundaciones, ONGs y empresas B en la provisión de educación, programas de responsabilidad social y figura de la escuela adoptante.</p>
+                    <div class="card-footer">2000-2025 | Clasificación: Alternativo</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-transgender-alt"></i></div>
+                    <h3>Género y Derechos Históricos</h3>
+                    <p>Evolución de representaciones sobre masculinidades, feminidades y disidencias, conquista del voto femenino, legislación de paridad y ESI.</p>
+                    <div class="card-footer">2006-2025 | Clasificación: Transformador</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== LÍNEA DE TIEMPO ========== -->
+        <section id="timeline" class="content-section">
+            <header class="section-header">
+                <div class="section-number">📅 CRONOLOGÍA</div>
+                <h1 class="section-title">Línea de Tiempo Completa</h1>
+                <p class="section-description">Momentos decisivos de la educación argentina</p>
+            </header>
+
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1536</div>
+                        <h3 class="timeline-title">Conquista Española</h3>
+                        <p class="timeline-description">Imposición del sistema educativo colonial centrado en la evangelización.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1810</div>
+                        <h3 class="timeline-title">Revolución de Mayo</h3>
+                        <p class="timeline-description">Belgrano establece las primeras escuelas independientes.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1884</div>
+                        <h3 class="timeline-title">Ley 1420</h3>
+                        <p class="timeline-description">Fundación del sistema nacional: educación obligatoria, gratuita y laica.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1946-1955</div>
+                        <h3 class="timeline-title">Primer Peronismo</h3>
+                        <p class="timeline-description">Centralización educativa, Estatuto del Docente, masificación.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1976-1983</div>
+                        <h3 class="timeline-title">Dictadura Militar</h3>
+                        <p class="timeline-description">Represión educativa, censura, Proyecto Educativo Autoritario.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1992-1993</div>
+                        <h3 class="timeline-title">Reforma Neoliberal</h3>
+                        <p class="timeline-description">Transferencias provinciales, Ley Federal, mercado educativo.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2006</div>
+                        <h3 class="timeline-title">Ley de Educación Nacional</h3>
+                        <p class="timeline-description">Estado reparador, ESI obligatoria, educación hasta 18 años.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2020-2025</div>
+                        <h3 class="timeline-title">Era Digital y Pandemia</h3>
+                        <p class="timeline-description">Educación virtual, brecha digital, nuevos desafíos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PERIODOS HISTÓRICOS ========== -->
+        <section id="periodos" class="content-section">
+            <header class="section-header">
+                <div class="section-number">HISTORIA ARGENTINA</div>
+                <h1 class="section-title">Períodos Históricos</h1>
+                <p class="section-description">Navegue por las diferentes etapas de la historia argentina</p>
+            </header>
+
+            <div class="cards-grid">
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-ship"></i></div>
+                    <h3>Invasiones Inglesas</h3>
+                    <p>El despertar de la identidad nacional. Reconquista y Defensa de Buenos Aires. Santiago de Liniers y las milicias populares.</p>
+                    <div class="card-footer">1806-1810 | Período Colonial</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-flag"></i></div>
+                    <h3>Revolución de Mayo</h3>
+                    <p>El nacimiento de la patria. Primera Junta, Independencia, Belgrano, San Martín. Asamblea del Año XIII.</p>
+                    <div class="card-footer">1810-1816 | Independencia</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Unitarios vs. Federales</h3>
+                    <p>La lucha por el modelo de país. Rosas, Urquiza, Rivadavia. Pacto Federal, Constitución de 1853.</p>
+                    <div class="card-footer">1819-1852 | Organización Nacional</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-landmark"></i></div>
+                    <h3>Organización Nacional</h3>
+                    <p>Modelo agroexportador. Sarmiento, Roca, Ley 1420. Inmigración masiva. Ley Sáenz Peña.</p>
+                    <div class="card-footer">1853-1916 | Consolidación</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-vote-yea"></i></div>
+                    <h3>Radicalismo y Peronismo</h3>
+                    <p>Democracia, justicia social e interrupción militar. Yrigoyen, Perón, Eva. Voto femenino. Década Infame.</p>
+                    <div class="card-footer">1916-1955 | Democracia y Dictadura</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-scroll"></i></div>
+                    <h3>Ley 1420</h3>
+                    <p>Análisis detallado de la ley fundacional del sistema educativo argentino. Cómo se logró, a quién incluye y excluye.</p>
+                    <div class="card-footer">1884 | Ley Fundacional</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== ACTIVIDADES ========== -->
+        <section id="actividades" class="content-section">
+            <header class="section-header">
+                <div class="section-number">ACTIVIDADES</div>
+                <h1 class="section-title">Propuestas Didácticas</h1>
+                <p class="section-description">18 actividades diseñadas para el curso 2025</p>
+            </header>
+
+            <div class="articles-section">
+                <div class="article-item">
+                    <div class="article-number">Actividad 1 | 9/4/25 - Grupal</div>
+                    <div class="article-text">
+                        <strong>Consigna:</strong> Lean el texto de Meléndez y Vizcarra "Historia y política de la educación en la formación docente" y elaboren un mapa conceptual que sintetice los principales argumentos sobre la importancia de esta materia.
+                    </div>
+                </div>
+
+                <div class="article-item">
+                    <div class="article-number">Actividad 2 | 16/4/25 - Individual</div>
+                    <div class="article-text">
+                        <strong>Análisis de Fuentes:</strong> Comparen las propuestas educativas de Sarmiento con las ideas de Alberdi. ¿Qué diferencias encuentran? ¿Cuáles son las implicancias políticas de cada propuesta?
+                    </div>
+                </div>
+
+                <div class="article-item">
+                    <div class="article-number">Actividad 3 | 23/4/25 - Grupal</div>
+                    <div class="article-text">
+                        <strong>Debate Histórico:</strong> Simulen el Congreso Pedagógico de 1882. Representen las diferentes posturas sobre laicismo vs. educación religiosa.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== EVALUACIÓN ========== -->
+        <section id="evaluacion" class="content-section">
+            <header class="section-header">
+                <div class="section-number">EVALUACIÓN</div>
+                <h1 class="section-title">Sistema de Evaluación</h1>
+                <p class="section-description">Criterios y modalidades para el curso anual</p>
+            </header>
+
+            <div class="cards-grid">
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-tasks"></i></div>
+                    <h3>Evaluación Continua</h3>
+                    <p>Participación en debates, análisis de fuentes, presentaciones grupales y elaboración de ensayos reflexivos sobre los diferentes períodos históricos estudiados.</p>
+                    <div class="card-footer">Peso: 40% | Modalidad: Formativa</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3>Parciales</h3>
+                    <p>Dos evaluaciones parciales que integren conocimientos de cada eje temático. Incluyen análisis de casos, comparaciones históricas y reflexión crítica.</p>
+                    <div class="card-footer">Peso: 40% | Modalidad: Sumativa</div>
+                </div>
+
+                <div class="card-neon">
+                    <div class="card-icon"><i class="fas fa-trophy"></i></div>
+                    <h3>Examen Final</h3>
+                    <p>Integración de toda la materia con énfasis en la capacidad de análisis crítico, vinculación histórico-presente y propuestas de intervención educativa fundamentadas.</p>
+                    <div class="card-footer">Peso: 20% | Modalidad: Integradora</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== LEY 1420 ========== -->
+        <section id="ley1420" class="content-section">
+            <header class="section-header">
+                <div class="law-badge neon">📜 LEY FUNDACIONAL</div>
+                <h1 class="section-title law-1420">Ley N° 1420 (1884)</h1>
+                <p class="section-description">"Educación Pública Obligatoria, Gratuita y Laica"</p>
+                <div class="law-meta">Sancionada: 26/06/1884 | Promulgada: 08/07/1884</div>
+            </header>
+
+            <div class="law-content">
+                <div class="timeline-gx">
+                    <h2><i class="fas fa-users"></i> Congreso Pedagógico de 1882</h2>
+                    <p style="text-align: center; margin-bottom: var(--space-lg); opacity: 0.9;">
+                        Convocado por Roca con 250 delegados. Debate laicismo vs. educación religiosa. Triunfa la postura laica.
+                    </p>
+                    <div class="timeline-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-title">Antecedentes (1870-1880)</div>
+                            <div class="step-desc">Sarmiento impulsa la educación pública. Primeras Escuelas Normales.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-title">Congreso (1882)</div>
+                            <div class="step-desc">Mayoría vota por laicismo. Iglesia se opone. Ruptura con el Vaticano.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-title">Debate (1883-84)</div>
+                            <div class="step-desc">Intensas discusiones en el Congreso. El Vaticano rompe relaciones.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-title">Sanción (26/06/84)</div>
+                            <div class="step-desc">Se aprueba la ley. Establece educación obligatoria, gratuita, gradual y laica.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card-neon">
+                        <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3>¿Qué PRETENDE?</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>✓</strong> Homogeneizar la población</li>
+                            <li><strong>✓</strong> Formar ciudadanos</li>
+                            <li><strong>✓</strong> Consolidar el Estado</li>
+                            <li><strong>✓</strong> Modernizar el país</li>
+                            <li><strong>✓</strong> Disciplinar a la población</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-neon">
+                        <div class="card-icon"><i class="fas fa-bookmark"></i></div>
+                        <h3>Principios Fundamentales</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>📌</strong> OBLIGATORIA (6-14 años)</li>
+                            <li><strong>📌</strong> GRATUITA</li>
+                            <li><strong>📌</strong> GRADUAL (6 grados)</li>
+                            <li><strong>📌</strong> LAICA (religión fuera del horario)</li>
+                            <li><strong>📌</strong> HIGIÉNICA</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="articles-section">
+                    <h2 style="color: var(--neon-celeste); margin-bottom: var(--space-lg);">
+                        📋 Artículos Clave
+                    </h2>
+                    
+                    <div class="article-item">
+                        <div class="article-number">Artículo 2°</div>
+                        <div class="article-text">
+                            "La instrucción primaria debe ser obligatoria, gratuita, gradual y dada conforme á los preceptos de la higiene."
+                        </div>
+                    </div>
+                    
+                    <div class="article-item">
+                        <div class="article-number">Artículo 6° (Contenidos)</div>
+                        <div class="article-text">
+                            "Lectura, escritura, aritmética, geografía, historia, moral, higiene, gimnástica. Niñas: labores domésticas. Varones: ejercicios militares."
+                        </div>
+                    </div>
+
+                    <div class="article-item">
+                        <div class="article-number">Artículo 8° (Laicismo)</div>
+                        <div class="article-text">
+                            "La enseñanza religiosa solo podrá ser dada... antes ó después de las horas de clase."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== LEY 26206 ========== -->
+        <section id="ley26206" class="content-section">
+            <header class="section-header">
+                <div class="law-badge">⚖️ LEY DE EDUCACIÓN NACIONAL</div>
+                <h1 class="section-title">Ley N° 26.206 (2006)</h1>
+                <p class="section-description">"Hacia una sociedad más justa"</p>
+                <div class="law-meta">Sancionada: 14/12/2006 | Promulgada: 27/12/2006</div>
+            </header>
+
+            <div class="law-content">
+                <div class="timeline-gx">
+                    <h2>ANTECEDENTE: La Crisis de los '90</h2>
+                    <div class="timeline-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-title">Transferencia (1991)</div>
+                            <div class="step-desc">Estado se desliga de responsabilidad directa.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-title">Ley Federal (1993)</div>
+                            <div class="step-desc">Lógica de mercado y fragmentación del sistema.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-title">Consecuencias</div>
+                            <div class="step-desc">Exclusión, desigualdad y deterioro salarial docente.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-title">Crisis 2001</div>
+                            <div class="step-desc">Colapso económico evidencia el fracaso del modelo.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card-neon">
+                        <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                        <h3>Cambios Principales</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>✓</strong> Obligatoriedad extendida (5-18 años)</li>
+                            <li><strong>✓</strong> Secundaria obligatoria</li>
+                            <li><strong>✓</strong> Estado responsable principal</li>
+                            <li><strong>✓</strong> Inversión garantizada (6% PBI)</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-neon">
+                        <div class="card-icon"><i class="fas fa-heart"></i></div>
+                        <h3>Inclusiones Clave</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>✓</strong> Educación Sexual Integral</li>
+                            <li><strong>✓</strong> Pueblos originarios</li>
+                            <li><strong>✓</strong> Educación rural</li>
+                            <li><strong>✓</strong> Contextos de encierro</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-gx">
+        <p>Historia y Política de la Educación Argentina | <strong>Alumno:Micciullo Maximiliano</strong></p>
+        <p>3° Profesorado de Matemática - Sede Capioví | 2025</p>
+        <p class="footer-glow">Prof. Enzo Fleitas</p>
+    </footer>
+
+    <!-- ========== JAVASCRIPT INTEGRADO ========== -->
+    <script>
+        // Esperar a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎮 Opera GX Edition loaded!');
+            
+            try {
+                initializeNavigation();
+                initializeAnimations();
+                console.log('✅ All systems initialized successfully');
+            } catch (error) {
+                console.error('❌ Error initializing:', error);
+            }
+        });
+
+        function initializeNavigation() {
+            console.log('🔧 Initializing navigation...');
+            
+            const tabs = document.querySelectorAll('.nav-tab');
+            const mobileToggle = document.getElementById('mobileToggle');
+            
+            if (tabs.length === 0) {
+                console.warn('⚠️ No navigation tabs found');
+                return;
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🖱️ Tab clicked:', this.dataset.section);
+                    
+                    const sectionId = this.dataset.section;
+                    showSection(sectionId);
+                    updateActiveTab(this);
+                });
+            });
+
+            // Mobile toggle
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', function() {
+                    document.getElementById('sidebar').classList.toggle('open');
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 1024) {
+                    const sidebar = document.getElementById('sidebar');
+                    const toggle = document.getElementById('mobileToggle');
+                    
+                    if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            });
+        }
+
+        function showSection(sectionId) {
+            console.log('📄 Showing section:', sectionId);
+            
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                animateSection(targetSection);
+            } else {
+                console.error('❌ Section not found:', sectionId);
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateActiveTab(activeTab) {
+            // Remover clase active de todas las tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Añadir clase active a la tab clickeada
+            activeTab.classList.add('active');
+        }
+
+        function initializeAnimations() {
+            console.log('🎨 Initializing animations...');
+            
+            // Intersection Observer para animaciones al scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observar tarjetas y elementos
+            const animateElements = document.querySelectorAll('.card-neon, .quote-card, .timeline-item');
+            animateElements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(el);
+            });
+        }
+
+        function animateSection(section) {
+            console.log('🎬 Animating section...');
+            
+            const elements = section.querySelectorAll('.card-neon, .quote-card, .timeline-item');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        // Debugging info
+        console.log('📊 Total sections:', document.querySelectorAll('.content-section').length);
+        console.log('📊 Total tabs:', document.querySelectorAll('.nav-tab').length);
+    </script>
+</body>
+</html>

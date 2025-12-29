@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del Profesor - Respuestas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0A0A0C;
+            color: #F2F2F2;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #1E6FB9, #16161A);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .respuestas-container {
+            background: #1E1E22;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .respuesta-item {
+            background: #16161A;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #FFD700;
+        }
+        
+        .alumno-info {
+            color: #1E6FB9;
+            font-weight: bold;
+        }
+        
+        .actividad-info {
+            color: #FFD700;
+            margin: 5px 0;
+        }
+        
+        .volver-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #1E6FB9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chalkboard-teacher"></i> Panel del Profesor</h1>
+            <p>Respuestas de los alumnos a las actividades</p>
+            <a href="index.html" class="volver-btn">Volver al Sistema Principal</a>
+        </div>
+        
+        <div class="respuestas-container" id="respuestasContainer">
+            <p>Cargando respuestas...</p>
+        </div>
+    </div>
+
+    <script>
+        function cargarRespuestas() {
+            try {
+                const respuestas = JSON.parse(localStorage.getItem('respuestasAlumnos') || '[]');
+                const container = document.getElementById('respuestasContainer');
+                
+                if (respuestas.length === 0) {
+                    container.innerHTML = '<p>No hay respuestas todavía.</p>';
+                    return;
+                }
+                
+                let html = '<h2>Total de respuestas: ' + respuestas.length + '</h2>';
+                
+                respuestas.forEach((resp, index) => {
+                    html += `
+                        <div class="respuesta-item">
+                            <div class="alumno-info">
+                                <i class="fas fa-user"></i> ${resp.alumno} (${resp.email})
+                            </div>
+                            <div class="actividad-info">
+                                <i class="fas fa-tasks"></i> ${resp.actividad} - ${resp.fecha}
+                            </div>
+                            <div style="margin: 10px 0; padding: 10px; background: #0A0A0C; border-radius: 5px;">
+                                <strong>Respuesta:</strong><br>
+                                ${resp.respuesta}
+                            </div>
+                            ${resp.archivo ? 
+                                `<div><i class="fas fa-file-pdf"></i> Archivo: ${resp.archivo}</div>` : 
+                                ''}
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error cargando respuestas:', error);
+                document.getElementById('respuestasContainer').innerHTML = 
+                    '<p>Error cargando respuestas. Asegúrate de que los alumnos hayan enviado actividades.</p>';
+            }
+        }
+        
+        // Cargar al iniciar
+        document.addEventListener('DOMContentLoaded', cargarRespuestas);
+        
+        // Recargar cada 30 segundos
+        setInterval(cargarRespuestas, 30000);
+    </script>
+</body>
+</html>
