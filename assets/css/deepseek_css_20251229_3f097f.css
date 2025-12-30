@@ -1,0 +1,63 @@
+:root{
+  --primary-bg:#0A0A0C;
+  --surface-bg:#16161A;
+  --card-bg:#1E1E22;
+  --paper-texture:#E3E1D5;
+  --neon-celeste:#1E6FB9;
+  --neon-dorado:#FFD700;
+  --neon-rojo:#E53E3E;
+  --text-primary:#F2F2F2;
+  --text-secondary:#A1A1AA;
+  --space-sm:1rem;
+  --space-md:1.5rem;
+  --space-lg:2rem;
+  --max-width:1100px;
+}
+
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:var(--primary-bg);color:var(--text-primary);margin:0;line-height:1.6}
+.container{max-width:var(--max-width);margin:0 auto;padding:1.25rem}
+.content-center{text-align:center}
+.header{padding:2rem;border-radius:12px;background:linear-gradient(135deg,var(--neon-celeste),var(--surface-bg));margin-bottom:1.5rem}
+.muted{color:var(--text-secondary)}
+.btn{display:inline-block;padding:.65rem 1rem;border-radius:8px;text-decoration:none;font-weight:600}
+.btn-primary{background:var(--neon-celeste);color:#fff}
+.btn-secondary{background:transparent;border:2px solid var(--neon-dorado);color:var(--neon-dorado)}
+
+.activities-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
+.activity-card{background:var(--card-bg);padding:1rem;border-radius:10px;border:1px solid var(--neon-celeste)}
+.activity-number{background:var(--neon-celeste);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:.75rem}
+
+.profile-header .profile-banner{width:100%;height:200px;object-fit:cover;border-radius:10px}
+.profile-section{display:flex;gap:1rem;align-items:flex-start;margin-top:1rem}
+.profile-pic{width:140px;height:140px;border-radius:50%;overflow:hidden;border:4px solid #000}
+.profile-info{flex:1}
+.display-name{font-size:1.5rem;font-weight:700}
+.username{color:var(--text-secondary);margin-bottom:.5rem}
+.bio{margin:.5rem 0;color:var(--text-secondary)}
+.stats{display:flex;gap:1rem;margin-top:0.75rem}
+.follow-btn{background:#fff;color:#000;border-radius:30px;padding:.6rem 1rem;border:none;cursor:pointer}
+
+.card{background:#fff;padding:1rem;border-radius:12px}
+.card-header{display:flex;gap:1rem;align-items:center}
+.president-pic{width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid #003087}
+.ley-title{font-weight:700;color:#003087}
+.links a{color:#1DA1F2;text-decoration:none}
+.links a:hover{text-decoration:underline}
+
+.respuestas-container{background:var(--card-bg);padding:1rem;border-radius:10px}
+.respuesta-item{background:#16161A;padding:.75rem;border-radius:8px;margin-bottom:.75rem;border-left:4px solid var(--neon-dorado)}
+
+.tweet{background:#fff;padding:1rem;border-radius:10px;margin-bottom:.75rem}
+.tweet-pic img{width:48px;height:48px;border-radius:50%;object-fit:cover}
+.tweet-image{width:100%;border-radius:12px;margin-top:.5rem}
+
+.skip-link{position:absolute;left:0;top:8px;background:#fff;color:#111;padding:8px 12px;transform:translateY(-120%);transition:transform .18s}
+.skip-link:focus{transform:translateY(0)}
+:focus-visible{outline:3px solid rgba(30,111,185,0.25);outline-offset:2px}
+
+/* Responsivo */
+@media (max-width:1024px){
+  .profile-section{flex-direction:column;align-items:center}
+  .profile-info{margin-left:0}
+}
